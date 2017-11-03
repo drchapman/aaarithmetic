@@ -68,17 +68,6 @@ def main(stdscr):
             qwin.addstr(q_line+2,q_col,"Nope",curses.color_pair(2))
         qwin.refresh()
         time.sleep(5)
-        #signal = qwin.getch()
-        
-        #while True:
-            #signal=qwin.getch()
-            ##curses.flushinp()
-            #if signal == ord('x'):
-            #    break
-            #elif signal ==
-            #time.sleep(0.1)
-
-
 
 wrapper(main)
 
