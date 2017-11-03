@@ -15,7 +15,7 @@ def main(stdscr):
     # Define colours
     curses.init_pair(1,curses.COLOR_RED,curses.COLOR_BLACK)
     curses.init_pair(2,curses.COLOR_BLACK,curses.COLOR_WHITE)
-    curses.init_pair(3,curses.COLOR_BLACK,curses.COLOR_WHITE)
+    curses.init_pair(3,curses.COLOR_GREEN,curses.COLOR_BLACK)
 
 
     # Question Window Parameters
@@ -36,9 +36,11 @@ def main(stdscr):
 
     # Create Question Window
     qwin = curses.newwin(q_height, q_width, q_y, q_x)
+    qwin.bkgd(curses.color_pair(2))
 
     # Option bar
     optwin = curses.newwin(opt_height, opt_width, opt_y, opt_x)
+    optwin.bkgd(curses.color_pair(2))
 
     options = [
             ["(S)","kip"],
@@ -48,7 +50,7 @@ def main(stdscr):
 
     for opt in options:
         leader=opt[0]
-        optwin.addstr(opt_line,opt_col,leader,curses.color_pair(1))
+        optwin.addstr(opt_line,opt_col,leader,curses.color_pair(3))
         opt_col=opt_col+3
         remains=opt[1]+"    "
         optwin.addstr(opt_line,opt_col,remains,curses.color_pair(0))
