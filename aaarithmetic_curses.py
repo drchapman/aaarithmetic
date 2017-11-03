@@ -26,8 +26,36 @@ def main(stdscr):
     q_line=0
     q_col=0
 
+    # Option bar parameters
+    opt_height=1
+    opt_width=80
+    opt_y=20
+    opt_x=5
+    opt_line=0
+    opt_col=0
+
     # Create Question Window
     qwin = curses.newwin(q_height, q_width, q_y, q_x)
+
+    # Option bar
+    optwin = curses.newwin(opt_height, opt_width, opt_y, opt_x)
+
+    options = [
+            ["(S)","kip"],
+            ["(M)","enu"],
+            ["(Q)","uit"]
+            ]
+
+    for opt in options:
+        leader=opt[0]
+        optwin.addstr(opt_line,opt_col,leader,curses.color_pair(1))
+        opt_col=opt_col+3
+        remains=opt[1]+"    "
+        optwin.addstr(opt_line,opt_col,remains,curses.color_pair(0))
+        opt_col += len(remains)
+
+    #optwin.addstr(opt_line,opt_col,"(S)kip    (M)enu    (Q)uit")
+    optwin.refresh()
 
     # Define the Question Text
     QnA= [
