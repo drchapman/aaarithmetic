@@ -35,12 +35,19 @@ create table sessions
 	session_time default CURRENT_TIMESTAMP,
 	set_id integer,
 	user_name text,
-	num_questions integer,
-	num_attempts integer,
-	num_correct integer,
+	num_questions integer default 0,
+	num_attempts integer default 0,
+	num_correct integer default 0,
 	foreign key(set_id) references sets(set_id)
 );
 
+create trigger session_count_init
+after insert on sessions
+begin
+	update sessions
+	set num_questions = (select count(q_id) from set_questions where set_id = new.set_id)
+	where session_id = new.session_id;
+end;
 
 -- Log Attempts to Answer Questions
 create table attempts
@@ -61,6 +68,11 @@ begin
 	update attempts
 	set correct = 1
 	where attempt_id = new.attempt_id;
+
+	update sessions
+	set num_attempts = num_attempts+1, 
+		num_correct = num_correct + (select correct from attempts where attempt_id = new.attempt_id)
+	where session_id = new.session_id;
 end
 
 
