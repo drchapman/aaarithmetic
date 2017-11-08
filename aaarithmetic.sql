@@ -35,6 +35,9 @@ create table sessions
 	session_time default CURRENT_TIMESTAMP,
 	set_id integer,
 	user_name text,
+	num_questions integer,
+	num_attempts integer,
+	num_correct integer,
 	foreign key(set_id) references sets(set_id)
 );
 
