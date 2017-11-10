@@ -3,3 +3,4 @@
 test*
 __*
 venv/
+setup.sql

@@ -32,9 +32,20 @@ create table set_questions
 -- Session Creation
 create table sessions 
 	(session_id integer primary key,
-	session_time default CURRENT_TIMESTAMP,
-	set_id integer,
+	session_time default CURRENT_TIMESTAMP,		-- Start time of session
+	set_id integer,					
 	user_name text,
+	/* OS PID and PID creation time used to prevent future connections from
+	accidentally updating a previous session */
+	pid integer,
+	pid_time integer,
+	/* session status can be:
+	0 - Session in progress (or connection terminated incorrectly)
+	    TODO clean-up/resume mechanism for crashed connections
+	1 - All questions in the set attempted and session closed
+	2 - Session closed correctly before all questions were answered
+	*/
+	session_status integer,
 	num_questions integer default 0,
 	num_attempts integer default 0,
 	num_correct integer default 0,

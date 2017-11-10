@@ -2,17 +2,25 @@
 
 import sqlite3
 import getpass
+import os
+import psutil
 
 class aaa_parser:
 
     def __init__(self, db):
-        self.connect(db)
         self.user=getpass.getuser()
+        self.pid = os.getpid()
+        self.proc = psutil.Process(self.pid)
+        self.connect(db)
+
+    def close(self):
+        self.dbc.close()
 
 
     def connect(self, db):
         self.dbc = sqlite3.connect(db)
         self.dbcurs = self.dbc.cursor()
+            
 
 
     def get_categories(self):
@@ -31,8 +39,10 @@ class aaa_parser:
 
     def begin_session(self,set_id):
         '''Create an entry in the session list'''
-        query = "insert into sessions (set_id, user_name) values (?, ?)"
-        results = self.dbcurs.execute(query, [str(set_id), self.user])
+        query = '''insert into sessions (set_id, user_name, pid, pid_time, session_status) 
+                   values (?, ?, ?, ?, ?)'''
+        parameters = [set_id, self.user, self.pid, self.proc.create_time(), 0]
+        results = self.dbcurs.execute(query, parameters)
         self.dbc.commit()
         return(self.dbcurs.lastrowid)
 
